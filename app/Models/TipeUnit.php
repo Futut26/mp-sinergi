@@ -25,5 +25,10 @@ class TipeUnit extends Model
         return $this->hasMany(Kavling::class, 'kd_tipe', 'kd_tipe');
     }
 
+    public function galeri()
+    {
+        return $this->hasMany(Galeri::class, 'kd_tipe', 'kd_tipe');
+    }
+
 
 }

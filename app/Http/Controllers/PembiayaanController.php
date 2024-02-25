@@ -30,6 +30,12 @@ class PembiayaanController extends Controller
     public function store(StorePembiayaanRequest $request)
     {
         //
+        $id_jenis_pembiayaan = $request->id_jenis_pembiayaan;
+        $kd_properti = $request->kd_properti;
+        $pembiayaan = new Pembiayaan();
+        $pembiayaan->id_jenis_pembiayaan = $id_jenis_pembiayaan;
+        $pembiayaan->kd_properti = $kd_properti;
+        $pembiayaan->save() ? back()->with('message', 'Data berhasil disimpan') : back()->with('error', 'Data gagal disimpan');
     }
 
     /**
@@ -61,6 +67,8 @@ class PembiayaanController extends Controller
      */
     public function destroy(Pembiayaan $pembiayaan)
     {
-        //
+        // delete data
+        $pembiayaan->delete() ? back()->with('message', 'Data berhasil dihapus') : back()->with('error', 'Data gagal dihapus');
+
     }
 }

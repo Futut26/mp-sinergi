@@ -11,7 +11,7 @@ class StorePembiayaanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class StorePembiayaanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "id_jenis_pembiayaan" => "required",
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            "id_jenis_pembiayaan.required" => "Jenis pembiayaan harus diisi",
         ];
     }
 }

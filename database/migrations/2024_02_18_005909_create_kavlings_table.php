@@ -130,7 +130,7 @@ return new class extends Migration
         ]);
 
         Schema::table('kavling', function (Blueprint $table) {
-            $table->foreign('kd_tipe')->references('kd_tipe')->on('tipe_unit');
+            $table->foreign('kd_tipe')->references('kd_tipe')->on('tipe_unit')->onDelete('cascade');
         });
 
     }

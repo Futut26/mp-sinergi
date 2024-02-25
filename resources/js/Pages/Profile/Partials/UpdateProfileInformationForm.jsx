@@ -100,7 +100,7 @@ export default function UpdateProfileInformation({
                             setData("nama_lengkap", e.target.value)
                         }
                         required
-                        isFocused
+                        isFocused 
                         autoComplete="nama_lengkap"
                     />
 

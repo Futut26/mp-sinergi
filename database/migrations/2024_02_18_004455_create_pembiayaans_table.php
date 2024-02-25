@@ -34,8 +34,8 @@ return new class extends Migration
         ]);
 
         Schema::table('pembiayaan', function (Blueprint $table) {
-            $table->foreign('id_jenis_pembiayaan')->references('id')->on('jenis_pembiayaan');
-            $table->foreign('kd_properti')->references('kd_properti')->on('properti');
+            $table->foreign('id_jenis_pembiayaan')->references('id')->on('jenis_pembiayaan')->onDelete('cascade');
+            $table->foreign('kd_properti')->references('kd_properti')->on('properti')->onDelete('cascade');
         });
     }
 

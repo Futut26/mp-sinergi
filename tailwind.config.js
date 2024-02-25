@@ -31,6 +31,7 @@ export default {
                 "success": "#1bac8d",
                 "warning": "#f7b064",
                 "error": "#da402f",
+                "danger": "#FF0000",
             },
           },
         ],

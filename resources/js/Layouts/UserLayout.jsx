@@ -7,13 +7,18 @@ import NotifKonsumen from "@/Components/UserComponents/NotifKonsumen";
 
 export default function UserLayout({ children, auth, title }) {
     const pathname = window.location.pathname;
-    console.log(auth);
+    const isKonsumen = auth.user && auth.user.role.nama_role === "konsumen";
+
+    // Check if any field in the konsumen object is empty
+    const hasEmptyKonsumenField =
+        isKonsumen &&
+        Object.values(auth.user.konsumen).some((field) => field === null);
 
     return (
         <>
             {title && <Head title={title} />}
             {/* cek apakah ada data konsumen yang kosong jika ada salah satu filed data konsumen maka munculkan NotifKonsumen */}
-            { auth.user  ? <NotifKonsumen nama_lengkap={auth.user.nama_lengkap} />: ""}
+            {hasEmptyKonsumenField && <NotifKonsumen nama_lengkap={auth.user.nama_lengkap} />}
             <div>
                 <Navbar auth={auth} />
                 {pathname === "/" && <Hero />}

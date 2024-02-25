@@ -1,6 +1,6 @@
 import { Link, router } from "@inertiajs/react";
 import React from "react";
-import ModalTambahPembiayaan from "./ModalTambahPembiayaan";
+import ModalTambahPembiayaan from "./AddPropertyModal";
 
 const TablePembiayaan = ({ meta, pembiayaan, opsi_pembiayaan, properti }) => {
 
@@ -9,7 +9,7 @@ const TablePembiayaan = ({ meta, pembiayaan, opsi_pembiayaan, properti }) => {
         if (confirm("Apakah anda yakin ingin menghapus pembiayaan ini?")) {
             router.delete(`/pembiayaan/delete/${id}`, {
                 onSuccess: () => {
-                    
+
                 },
             });
 

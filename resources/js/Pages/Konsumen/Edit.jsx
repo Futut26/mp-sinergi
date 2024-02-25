@@ -105,7 +105,7 @@ const Edit = ({ auth, user, title }) => {
                         >
                             <i className="bi bi-pencil-square"></i>
                             <h1>Edit Data Pribadi</h1>
-                        </button>
+                        </button> 
                     </div>
                 </div>
                 {/* form edit data pribadi */}

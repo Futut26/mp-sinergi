@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\KelolaProperti;
+use App\Http\Controllers\PembiayaanController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -65,6 +66,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Admin/Dashboard');
     })->name('dashboard');
-
     Route::get('/manage_property', [KelolaProperti::class, 'index'])->name('manage_property');
+    Route::get('/add-property', [KelolaProperti::class, 'create'])->name('add_property');
+    Route::post('/add-property', [KelolaProperti::class, 'store'])->name('store_property');
+    Route::delete('/delete-property/{properti}', [KelolaProperti::class, 'destroy'])->name('delete_property');
+    Route::get('/edit-property/{properti}', [KelolaProperti::class, 'edit'])->name('edit_property');
+    Route::put('/edit-property/{properti}', [KelolaProperti::class, 'update'])->name('update_property');
+
+
+    Route::post('/add-pembiayaan', [PembiayaanController::class, 'store'])->name('store_pembiayaan');
+    Route::delete('/delete-pembiayaan/{pembiayaan}', [PembiayaanController::class, 'destroy'])->name('delete_pembiayaan');
 });

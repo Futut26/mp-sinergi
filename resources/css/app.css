@@ -35,3 +35,20 @@
     /* text color */
         color: #fff;
 }
+
+.btn-danger{
+    background-color: #bc4141;
+    /* text color */
+        color: #fff;
+
+}
+
+.btn-danger:hover {
+    background-color: #b50505;
+    /* text color */
+        color: #fff;
+}
+
+
+/* style bar overflow */
+

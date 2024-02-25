@@ -35,7 +35,7 @@ const Header = ({ auth, toggleSidebar, isSidebarOpen }) => {
             <div className="w-auto flex h-16 md:h-20 gap-2">
                 <button
                     onClick={toggleSidebar}
-                    className="text-3xl md:hidden block"
+                    className="text-3xl lg:hidden block"
                 >
                     <i
                         className={`bi ${

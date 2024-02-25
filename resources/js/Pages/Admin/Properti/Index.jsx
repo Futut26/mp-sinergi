@@ -1,10 +1,13 @@
+import CardProperty from "@/Components/AdminComponents/ManageProperty/CardProperty";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { usePage } from "@inertiajs/react";
 import React from "react";
 import { useState } from "react";
 
-const Index = ({ auth, title }) => {
+const Index = ({ auth, title, ...props}) => {
     const properti = usePage().props.properti;
+
+    console.log(properti);
 
     const [propertyActive, setPropertyActive] = useState(true);
     const [categoryPropertyActive, setCategoryPropertyActive] = useState(false);
@@ -14,25 +17,21 @@ const Index = ({ auth, title }) => {
         setPropertyActive(!propertyActive);
         setCategoryPropertyActive(false);
         setJenisPropertyActive(false);
-
     };
     const toggleCategoryProperty = () => {
         setCategoryPropertyActive(!categoryPropertyActive);
         setJenisPropertyActive(false);
         setPropertyActive(false);
-
     };
     const toggleJenisProperty = () => {
         setJenisPropertyActive(!jenisPropertyActive);
         setPropertyActive(false);
         setCategoryPropertyActive(false);
-
     };
 
-
     return (
-        <AdminLayout auth={auth} title={title} >
-            <div className="mb-10">
+        <AdminLayout auth={auth} title={title}>
+            <div className="mb-24">
                 <header className="h-auto px-4 py-2 mt-5 w-full border bg-white shadow-sm ">
                     <ul className="flex md:gap-10 md:justify-start items-center justify-around font-medium">
                         <li
@@ -66,9 +65,12 @@ const Index = ({ auth, title }) => {
                         >
                             Jenis Properti
                         </li>
-
                     </ul>
                 </header>
+
+                <div className="w-full flex justify-center flex-col gap-4 mt-5 ">
+                    {propertyActive && <CardProperty properti={properti} />}
+                </div>
             </div>
         </AdminLayout>
     );

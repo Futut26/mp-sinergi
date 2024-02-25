@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('properti', function (Blueprint $table) {
             $table->id('kd_properti');
-            $table->foreignId('id_kategori_properti')->constrained('kategori_properti');
+            $table->foreignId('id_kategori_properti')->constrained('kategori_properti')->onDelete('no action');
             $table->string('nama_properti');
             $table->text('logo');
             $table->text('thumbnail');
@@ -21,8 +21,11 @@ return new class extends Migration {
             $table->text('url_maps');
             $table->string('pinvalue_min');
             $table->string('pinvalue_max');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
+
+
         $faker = Faker\Factory::create('id_ID');
         DB::table('properti')->insert(
             [
@@ -36,6 +39,7 @@ return new class extends Migration {
                     'url_maps' => 'https://goo.gl/maps/3Z9J6Z8Zz3z',
                     'pinvalue_min' => '1600000000',
                     'pinvalue_max' => '1700000000',
+                    'status' => 'active',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
@@ -49,8 +53,10 @@ return new class extends Migration {
                     'url_maps' => 'https://goo.gl/maps/3Z9J6Z8Zz3z',
                     'pinvalue_min' => '400000000',
                     'pinvalue_max' => '600000000',
+                    'status' => 'active',
                     'created_at' => now(),
                     'updated_at' => now(),
+
                 ],
                 [
                     'id_kategori_properti' => 1,
@@ -62,6 +68,7 @@ return new class extends Migration {
                     'url_maps' => 'https://goo.gl/maps/3Z9J6Z8Zz3z',
                     'pinvalue_min' => '1400000000',
                     'pinvalue_max' => '1600000000',
+                    'status' => 'active',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],

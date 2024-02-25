@@ -47,7 +47,7 @@ return new class extends Migration
             ]);
 
             Schema::table('tipe_unit', function (Blueprint $table) {
-                $table->foreign('kd_properti')->references('kd_properti')->on('properti');
+                $table->foreign('kd_properti')->references('kd_properti')->on('properti')->onDelete('cascade');
             });
     }
 

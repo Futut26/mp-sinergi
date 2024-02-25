@@ -41,7 +41,6 @@ const FlashMessage = ({flash}) => {
                     {alertMessage.message && (
                         <span>{alertMessage.message}</span>
                     )}
-
                     {alertMessage.error && <span>{alertMessage.error}</span>}
                 </div>
             )}
