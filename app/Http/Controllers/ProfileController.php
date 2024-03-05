@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,25 +28,32 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request, User $user)
     {
-        $user = $request->user();
-
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
 
         if ($request->hasFile('avatar')) {
+            // hapus file lama
+            if ($user->avatar && file_exists(public_path($user->avatar))) {
+                unlink(public_path($user->avatar));
+            }
             $avatar = $request->file('avatar');
-            $fileName =  $avatar->getClientOriginalName() . '.' . $avatar->getClientOriginalExtension();
+            $fileName = "/assets/img/avatar/" . $avatar->getClientOriginalName();
             $avatar->move(public_path('/assets/img/avatar'), $fileName);
-            $user->avatar = '/assets/img/avatar/'.$fileName;
+        }else {
+            $fileName = $user->avatar;
         }
+
         // update user
-        $user->save();
-        return Redirect::route('profile.edit');
+        $user->update([
+            'nama_lengkap' => $request->nama_lengkap,
+            'email' => $request->email,
+            'avatar' => $fileName,
+        ]);
+
+        return Redirect::back()->with('message', 'Profile updated!');
+
+
+
     }
 
     /**

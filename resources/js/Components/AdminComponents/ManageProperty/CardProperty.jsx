@@ -4,7 +4,7 @@ import parse from "html-react-parser";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
-import SearchProperty from "./SearchProperty"; 
+import SearchProperty from "./SearchProperty";
 
 const CardProperty = ({ properti }) => {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -88,7 +88,7 @@ const CardProperty = ({ properti }) => {
                             <p>{item.lokasi}</p>
                             {/* deskripsi mengandung tag html */}
                             {/* cek kalo ada data yang mengandung elemen ul tambahkan classname list-disc kalau ada data nya mengandung elemen ol classname  */}
-                            <article className="truncate ">
+                            <article className="truncate show-list ">
                                 {parse(item.deskripsi)}
                             </article>
                             {item.tipe_unit.length === 0 ? (

@@ -17,10 +17,13 @@ class GaleriFactory extends Factory
     public function definition(): array
     {
         return [
-            'kd_tipe' => $this->faker->numberBetween(1, 1),
+            'kd_properti' => $this->faker->numberBetween(1, 1),
+            'kd_tipe' => $this->faker->numberBetween(1, 2),
             'judul' => $this->faker->sentence(mt_rand(3, 6)),
-            'url' => 'public/assets/img/properti/galeri/' . $this->faker->image('public/assets/img/properti/galeri/', 640, 480, null, false),
+            'url' => '/assets/img/properti/galeri/' . $this->faker->image('public/assets/img/properti/galeri/', 640, 480, null, false),
             'jenis_file' => 'image',
         ];
+
+        
     }
 }

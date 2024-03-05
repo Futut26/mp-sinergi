@@ -31,7 +31,7 @@ Route::get('/auth/google/callback', [AuthenticatedSessionController::class, 'han
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/personal-data', [KonsumenController::class, 'edit'])->name('personal-data.edit');
     Route::post('/personal-data', [KonsumenController::class, 'update'])->name('personal-data.update');

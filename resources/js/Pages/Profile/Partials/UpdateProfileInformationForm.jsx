@@ -18,9 +18,10 @@ export default function UpdateProfileInformation({
             avatar: user.avatar || null,
             email: user.email || "",
         });
+
     const submit = (e) => {
         e.preventDefault();
-        post(route("profile.update"));
+        post(route("profile.update", user.id));
     };
 
     // State untuk menyimpan URL gambar priview
@@ -100,7 +101,7 @@ export default function UpdateProfileInformation({
                             setData("nama_lengkap", e.target.value)
                         }
                         required
-                        isFocused 
+                        isFocused
                         autoComplete="nama_lengkap"
                     />
 

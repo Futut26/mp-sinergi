@@ -30,5 +30,10 @@ class Properti extends Model
         return $this->hasMany(TipeUnit::class, 'kd_properti', 'kd_properti');
     }
 
+    public function galeri()
+    {
+        return $this->hasMany(Galeri::class, 'kd_properti', 'kd_properti');
+    }
+
 
 }

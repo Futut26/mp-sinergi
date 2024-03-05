@@ -13,10 +13,15 @@ class Galeri extends Model
     protected $guarded = ['id'];
 
 
-    
+
     public function tipeUnit()
     {
         return $this->belongsTo(TipeUnit::class, 'tipe_unit_id', 'id');
+    }
+
+    public function properti()
+    {
+        return $this->belongsTo(Properti::class, 'properti_id', 'id');
     }
 
 }

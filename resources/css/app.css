@@ -52,3 +52,71 @@
 
 /* style bar overflow */
 
+
+
+/* komponen ul yang berada di bawah class show-list kasih list disc*/
+.show-list ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.show-list ol {
+    list-style-type: decimal;
+    margin-left: 20px;
+}
+
+/* alpha list */
+.show-list ul.alpha {
+    list-style-type: lower-alpha;
+    margin-left: 20px;
+}
+
+/* create css animation to show .alert-animation  zoom-out end hide to zoom in*/
+@keyframes zoom-out {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes zoom-in {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.alert-animation {
+    animation: zoom-out 0.7s, zoom-in 0.7s;
+    animation-fill-mode: forwards;
+}
+
+/* buatkan animasi memudar untuk alert-container-animation */
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.alert-container-animation {
+    animation: fade-out 0.5s, fade-in 0.5s;
+    animation-fill-mode: forwards;
+}
+
+

@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id('kd_tipe');
             $table->foreignId('kd_properti');
             $table->string('nama_tipe')->nullable();
-            $table->integer('jumlah_unit')->nullable();
-            $table->text('spesifikasi')->nullable();
+             $table->text('spesifikasi')->nullable();
             $table->text('fasilitas')->nullable();
             $table->string('harga')->nullable();
             $table->timestamps();
@@ -27,7 +26,6 @@ return new class extends Migration
               [
                 'kd_properti' => 1,
                 'nama_tipe' => 'Standard',
-                'jumlah_unit' => 17,
                 'spesifikasi' => $faker->paragraphs(3, true),
                 'fasilitas' => $faker->paragraphs(3, true),
                 'harga' => '160000000',
@@ -37,7 +35,6 @@ return new class extends Migration
               [
                 'kd_properti' => 1,
                 'nama_tipe' => 'Premium',
-                'jumlah_unit' => 17,
                 'spesifikasi' => $faker->paragraphs(3, true),
                 'fasilitas' => $faker->paragraphs(3, true),
                 'harga' => '170000000',

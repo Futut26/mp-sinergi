@@ -6,6 +6,9 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import TablePembiyaan from "./Partials/TablePembiyaan";
+import TableTipeUnit from "./Partials/TableTipeUnit";
+import TableKavling from "./Partials/TableKavling";
+import Galeri from "./Partials/Galeri";
 
 const EditProperty = ({ auth, title, ...props }) => {
     const properti = usePage().props.properti;
@@ -23,14 +26,14 @@ const EditProperty = ({ auth, title, ...props }) => {
         formatToRupiah(properti.pinvalue_max)
     );
 
-    console.log("Jenis Properti: ", jenis_properti);
+    // console.log("Jenis Properti: ", jenis_properti);
 
-    console.log("Kategori Properti: ", kategori_properti);
+    // console.log("Kategori Properti: ", kategori_properti);
 
     const {
         data,
         setData,
-        put,
+        post,
         errors,
         processing,
         recentlySuccessful,
@@ -43,8 +46,8 @@ const EditProperty = ({ auth, title, ...props }) => {
         deskripsi: properti.deskripsi,
         pinvalue_min: formattedPriceMin,
         pinvalue_max: formattedPriceMax,
-        thumbnail: properti.thumbnail,
-        logo: properti.logo,
+        thumbnail: "",
+        logo: "",
         pembiayaan: properti.pembiayaan,
         id_jenis_properti: properti.kategori_properti.id_jenis_properti,
     });
@@ -99,276 +102,409 @@ const EditProperty = ({ auth, title, ...props }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log("Data: ", data);
-        //put(route("update_property", properti.kd_properti));
-        // if(recentlySuccessful) {
-        //     // scroll to top
-        //     window.scrollTo(0, 0);
-        // }
+        //console.log("Data: ", data);
+        post(route("update_property", properti.kd_properti));
     };
+
+    const [propertyActive, setPropertyActive] = useState(true);
+    const [OpsiPembiayaan, setOpsiPembiayaan] = useState(false);
+    const [UnitActive, setUnitActive] = useState(false);
+    const [KavlingActive, setKavlingActive] = useState(false);
+    const [GaleriActive, setGaleriActive] = useState(false);
+
+    const toggleProperty = () => {
+        setPropertyActive(true);
+        setOpsiPembiayaan(false);
+        setUnitActive(false);
+        setKavlingActive(false);
+        setGaleriActive(false);
+    };
+    const toggleCategoryProperty = () => {
+        setOpsiPembiayaan(true);
+        setUnitActive(false);
+        setPropertyActive(false);
+        setKavlingActive(false);
+        setGaleriActive(false);
+    };
+    const toggleJenisProperty = () => {
+        setUnitActive(true);
+        setPropertyActive(false);
+        setOpsiPembiayaan(false);
+        setKavlingActive(false);
+        setGaleriActive(false);
+
+    };
+
+    const toggleKavling = () => {
+        setKavlingActive(true);
+        setPropertyActive(false);
+        setOpsiPembiayaan(false);
+        setUnitActive(false);
+        setGaleriActive(false);
+    }
+
+    const toggleGaleri = () => {
+        setGaleriActive(true);
+        setPropertyActive(false);
+        setOpsiPembiayaan(false);
+        setUnitActive(false);
+        setKavlingActive(false);
+    }
+
     return (
         <AdminLayout auth={auth} title={title}>
             <div className="mb-24">
+                <header className="h-auto px-4 py-2 mt-5 w-full border bg-white shadow-sm overflow-y-auto">
+                    <ul className="flex md:gap-10 md:justify-start items-center font-medium w-auto">
+                        <li
+                            className={`hover:border-b-2 hover:border-slate-400 px-3 w-full md:w-auto text-center cursor-pointer ${
+                                propertyActive
+                                    ? "border-b-2 border-slate-400"
+                                    : ""
+                            }`}
+                            onClick={toggleProperty}
+                        >
+                            Properti
+                        </li>
+                        <li
+                            className={`hover:border-b-2 hover:border-slate-400 px-3 w-full md:w-auto text-center cursor-pointer ${
+                                OpsiPembiayaan
+                                    ? "border-b-2 border-slate-400"
+                                    : ""
+                            }`}
+                            onClick={toggleCategoryProperty}
+                        >
+                            Opsi Pembiayaan
+                        </li>
+
+                        <li
+                            className={`hover:border-b-2 hover:border-slate-400 px-3 w-full md:w-auto text-center cursor-pointer ${
+                                UnitActive ? "border-b-2 border-slate-400" : ""
+                            }`}
+                            onClick={toggleJenisProperty}
+                        >
+                            Unit Properti
+                        </li>
+
+                        <li
+                            className={`hover:border-b-2 hover:border-slate-400 px-3 w-full md:w-auto text-center cursor-pointer ${
+                                KavlingActive ? "border-b-2 border-slate-400" : ""
+                            }`}
+                            onClick={toggleKavling}
+                        >
+                            Kavling
+                        </li>
+
+                        <li
+                            className={`hover:border-b-2 hover:border-slate-400 px-3 w-full md:w-auto text-center cursor-pointer ${
+                                GaleriActive ? "border-b-2 border-slate-400" : ""
+                            }`}
+                            onClick={toggleGaleri}
+                        >
+                            Galeri
+                        </li>
+                    </ul>
+                </header>
+
                 <div className="mt-5 flex flex-col gap-10">
-                    <form onSubmit={onSubmit}>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label htmlFor="nama_properti">
-                                    Nama Properti*
-                                </label>
-                                <input
-                                    required
-                                    type="text"
-                                    name="nama_properti"
-                                    id="nama_properti"
-                                    className="w-full border-2 border-slate-400 rounded-md p-2"
-                                    value={data.nama_properti}
-                                    onChange={(e) =>
-                                        setData("nama_properti", e.target.value)
-                                    }
-                                />
-                                <InputError message={errors.nama_properti} />
-                            </div>
-                            <div>
-                                <label htmlFor="lokasi">Lokasi*</label>
-                                <input
-                                    required
-                                    type="text"
-                                    name="lokasi"
-                                    id="lokasi"
-                                    className="w-full border-2 border-slate-400 rounded-md p-2"
-                                    value={data.lokasi}
-                                    onChange={(e) =>
-                                        setData("lokasi", e.target.value)
-                                    }
-                                />
-                                <InputError message={errors.lokasi} />
-                            </div>
-
-                            <div>
-                                <label htmlFor="url_maps">
-                                    URL Maps (Opsional)
-                                </label>
-                                <input
-                                    type="text"
-                                    name="url_maps"
-                                    id="url_maps"
-                                    className="w-full border-2 border-slate-400 rounded-md p-2"
-                                    value={data.url_maps}
-                                    onChange={(e) =>
-                                        setData("url_maps", e.target.value)
-                                    }
-                                />
-                                <InputError message={errors.url_maps} />
-                            </div>
-
-                            <div className="flex flex-col  justify-between w-full md:flex-row">
+                    {propertyActive && properti && (
+                        <form onSubmit={onSubmit}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label htmlFor="jenis_properti">
-                                        Jenis Properti*
+                                    <label htmlFor="nama_properti">
+                                        Nama Properti*
                                     </label>
-                                    <select
-                                        required
-                                        name="jenis_properti"
-                                        id="jenis_properti"
+                                    <input
+                                        type="text"
+                                        name="nama_properti"
+                                        id="nama_properti"
                                         className="w-full border-2 border-slate-400 rounded-md p-2"
-                                        value={data.id_jenis_properti}
-                                        onChange={(e) => {
-                                            const selectedJenisPropertiId =
-                                                e.target.value;
-                                            const firstKategoriId =
-                                                jenis_properti.find(
-                                                    (item) =>
-                                                        item.id ==
-                                                        selectedJenisPropertiId
-                                                ).kategori_properti[0].id; // Ambil id dari item pertama
-                                            setData(
-                                                "id_jenis_properti",
-                                                selectedJenisPropertiId
-                                            );
-                                            setData(
-                                                "id_kategori_properti",
-                                                firstKategoriId
-                                            ); // Set nilai id_kategori_properti ke item pertama secara otomatis
-                                            setKategori_properti(
-                                                jenis_properti.find(
-                                                    (item) =>
-                                                        item.id ==
-                                                        selectedJenisPropertiId
-                                                ).kategori_properti
-                                            );
-                                        }}
-                                    >
-                                        <option disabled value="">
-                                            Pilih Jenis Properti
-                                        </option>
-                                        {jenis_properti.map((item, index) => (
-                                            <option key={index} value={item.id}>
-                                                {item.jenis}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <InputError
-                                        message={errors.jenis_properti}
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="id_kategori_properti">
-                                        Kategori Properti*
-                                    </label>
-                                    <select
-                                        required
-                                        name="id_kategori_properti"
-                                        id="id_kategori_properti"
-                                        className="w-full border-2 border-slate-400 rounded-md p-2"
-                                        value={data.id_kategori_properti}
+                                        value={data.nama_properti}
                                         onChange={(e) =>
-                                            // jika jenis properti diganti maka set nilai data.id_kategori_properti berdasarkan value index pertama secara otomatis
                                             setData(
-                                                "id_kategori_properti",
+                                                "nama_properti",
                                                 e.target.value
                                             )
                                         }
-                                    >
-                                        <option disabled value="">
-                                            Pilih Kategori Properti
-                                        </option>
-
-                                        {kategori_properti.map(
-                                            (item, index) => (
-                                                <option
-                                                    key={index}
-                                                    value={item.id}
-                                                >
-                                                    {item.kategori}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
+                                    />
                                     <InputError
-                                        message={errors.id_kategori_properti}
+                                        message={errors.nama_properti}
                                     />
                                 </div>
-                            </div>
-
-                            <div>
-                                <label htmlFor="pinvalue_min">
-                                    Pinvalue Min*
-                                </label>
-                                <input
-                                    required
-                                    type="text"
-                                    name="pinvalue_min"
-                                    id="pinvalue_min"
-                                    className="w-full border-2
-                                        border-slate-400 rounded-md p-2"
-                                    value={formattedPriceMin}
-                                    onChange={handleChange}
-                                />
-                                <InputError message={errors.pinvalue_min} />
-                            </div>
-                            <div>
-                                <label htmlFor="pinvalue_max">
-                                    Pinvalue Max*
-                                </label>
-                                <input
-                                    required
-                                    type="text"
-                                    name="pinvalue_max"
-                                    id="pinvalue_max"
-                                    className="w-full border-2
-                                        border-slate-400 rounded-md p-2"
-                                    value={formattedPriceMax}
-                                    onChange={handleChange}
-                                />
-                                <InputError error={errors.pinvalue_max} />
-                            </div>
-                            <div>
-                                <label htmlFor="thumbnail">Thumbnail*</label>
-                                <div className="mb-3">
-                                    <img
-                                        src={
-                                            thumbnailPreviewUrl
-                                                ? thumbnailPreviewUrl
-                                                : "https://via.placeholder.com/150"
+                                <div>
+                                    <label htmlFor="lokasi">Lokasi*</label>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="lokasi"
+                                        id="lokasi"
+                                        className="w-full border-2 border-slate-400 rounded-md p-2"
+                                        value={data.lokasi}
+                                        onChange={(e) =>
+                                            setData("lokasi", e.target.value)
                                         }
-                                        alt="thumbnail"
-                                        className="w-20 h-20 object-contain"
                                     />
+                                    <InputError message={errors.lokasi} />
                                 </div>
-                                <input
-                                    type="file"
-                                    name="thumbnail"
-                                    id="thumbnail"
-                                    className="w-full file-input file-input-primary border-none"
-                                    onChange={(e) => {
-                                        setData("thumbnail", e.target.files[0]);
-                                        previewImage(e, "thumbnail");
-                                    }}
-                                />
-                                <InputError error={errors.thumbnail} />
-                            </div>
 
-                            <div>
-                                <label htmlFor="logo">Logo*</label>
-                                <div className="mb-3">
-                                    <img
-                                        src={
-                                            logoPreviewUrl
-                                                ? logoPreviewUrl
-                                                : "https://via.placeholder.com/150"
+                                <div>
+                                    <label htmlFor="url_maps">
+                                        URL Maps (Opsional)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="url_maps"
+                                        id="url_maps"
+                                        className="w-full border-2 border-slate-400 rounded-md p-2"
+                                        value={data.url_maps}
+                                        onChange={(e) =>
+                                            setData("url_maps", e.target.value)
                                         }
-                                        alt="logo"
-                                        className="w-20 h-20 object-contain"
                                     />
+                                    <InputError message={errors.url_maps} />
                                 </div>
-                                <input
-                                    type="file"
-                                    name="logo"
-                                    id="logo"
-                                    className="w-full file-input file-input-primary border-none"
-                                    onChange={(e) => {
-                                        setData("logo", e.target.files[0]);
-                                        previewImage(e, "logo");
-                                    }}
-                                />
-                                <InputError error={errors.logo} />
+
+                                <div className="flex flex-col  justify-between w-full md:flex-row">
+                                    <div>
+                                        <label htmlFor="jenis_properti">
+                                            Jenis Properti*
+                                        </label>
+                                        <select
+                                            required
+                                            name="jenis_properti"
+                                            id="jenis_properti"
+                                            className="w-full border-2 border-slate-400 rounded-md p-2"
+                                            value={data.id_jenis_properti}
+                                            onChange={(e) => {
+                                                const selectedJenisPropertiId =
+                                                    e.target.value;
+                                                const firstKategoriId =
+                                                    jenis_properti.find(
+                                                        (item) =>
+                                                            item.id ==
+                                                            selectedJenisPropertiId
+                                                    ).kategori_properti[0].id; // Ambil id dari item pertama
+                                                setData(
+                                                    "id_jenis_properti",
+                                                    selectedJenisPropertiId
+                                                );
+                                                setData(
+                                                    "id_kategori_properti",
+                                                    firstKategoriId
+                                                ); // Set nilai id_kategori_properti ke item pertama secara otomatis
+                                                setKategori_properti(
+                                                    jenis_properti.find(
+                                                        (item) =>
+                                                            item.id ==
+                                                            selectedJenisPropertiId
+                                                    ).kategori_properti
+                                                );
+                                            }}
+                                        >
+                                            <option disabled value="">
+                                                Pilih Jenis Properti
+                                            </option>
+                                            {jenis_properti.map(
+                                                (item, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={item.id}
+                                                    >
+                                                        {item.jenis}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                        <InputError
+                                            message={errors.jenis_properti}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="id_kategori_properti">
+                                            Kategori Properti*
+                                        </label>
+                                        <select
+                                            required
+                                            name="id_kategori_properti"
+                                            id="id_kategori_properti"
+                                            className="w-full border-2 border-slate-400 rounded-md p-2"
+                                            value={data.id_kategori_properti}
+                                            onChange={(e) =>
+                                                // jika jenis properti diganti maka set nilai data.id_kategori_properti berdasarkan value index pertama secara otomatis
+                                                setData(
+                                                    "id_kategori_properti",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option disabled value="">
+                                                Pilih Kategori Properti
+                                            </option>
+
+                                            {kategori_properti.map(
+                                                (item, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={item.id}
+                                                    >
+                                                        {item.kategori}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                        <InputError
+                                            message={
+                                                errors.id_kategori_properti
+                                            }
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="pinvalue_min">
+                                        Pinvalue Min*
+                                    </label>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="pinvalue_min"
+                                        id="pinvalue_min"
+                                        className="w-full border-2
+                                        border-slate-400 rounded-md p-2"
+                                        value={formattedPriceMin}
+                                        onChange={handleChange}
+                                    />
+                                    <InputError message={errors.pinvalue_min} />
+                                </div>
+                                <div>
+                                    <label htmlFor="pinvalue_max">
+                                        Pinvalue Max*
+                                    </label>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="pinvalue_max"
+                                        id="pinvalue_max"
+                                        className="w-full border-2
+                                        border-slate-400 rounded-md p-2"
+                                        value={formattedPriceMax}
+                                        onChange={handleChange}
+                                    />
+                                    <InputError error={errors.pinvalue_max} />
+                                </div>
+                                <div>
+                                    <label htmlFor="thumbnail">
+                                        Thumbnail*
+                                    </label>
+                                    <div className="mb-3">
+                                        <img
+                                            src={
+                                                thumbnailPreviewUrl
+                                                    ? thumbnailPreviewUrl
+                                                    : "https://via.placeholder.com/150"
+                                            }
+                                            alt="thumbnail"
+                                            className="w-20 h-20 object-contain"
+                                        />
+                                    </div>
+                                    <input
+                                        type="file"
+                                        name="thumbnail"
+                                        id="thumbnail"
+                                        className="w-full file-input file-input-primary border-none"
+                                        onChange={(e) => {
+                                            setData(
+                                                "thumbnail",
+                                                e.target.files[0]
+                                            );
+                                            previewImage(e, "thumbnail");
+                                        }}
+                                    />
+                                    <InputError error={errors.thumbnail} />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="logo">Logo*</label>
+                                    <div className="mb-3">
+                                        <img
+                                            src={
+                                                logoPreviewUrl
+                                                    ? logoPreviewUrl
+                                                    : "https://via.placeholder.com/150"
+                                            }
+                                            alt="logo"
+                                            className="w-20 h-20 object-contain"
+                                        />
+                                    </div>
+                                    <input
+                                        type="file"
+                                        name="logo"
+                                        id="logo"
+                                        className="w-full file-input file-input-primary border-none"
+                                        onChange={(e) => {
+                                            setData("logo", e.target.files[0]);
+                                            previewImage(e, "logo");
+                                        }}
+                                    />
+                                    <InputError error={errors.logo} />
+                                </div>
+
+                                <div className="w-full h-full mb-10">
+                                    <label htmlFor="deskripsi">
+                                        Deskripsi*
+                                    </label>
+                                    <ReactQuill
+                                        theme="snow"
+                                        className="h-64"
+                                        value={data.deskripsi}
+                                        onChange={(value) => {
+                                            setData("deskripsi", value);
+                                        }}
+                                    />
+                                    <InputError error={errors.deskripsi} />
+                                </div>
                             </div>
 
-                            <div className="w-full h-full mb-10">
-                                <label htmlFor="deskripsi">Deskripsi*</label>
-                                <ReactQuill
-                                    theme="snow"
-                                    className="h-64"
-                                    value={data.deskripsi}
-                                    onChange={(value) => {
-                                        setData("deskripsi", value);
-                                    }}
-                                />
-                                <InputError error={errors.deskripsi} />
+                            <div className="mt-5 flex gap-3">
+                                <Link
+                                    href={route("manage_property")}
+                                    className="btn btn-secondary"
+                                    as="button"
+                                >
+                                    Kembali
+                                </Link>
+                                <button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="btn btn-primary"
+                                >
+                                    Simpan
+                                </button>
                             </div>
-                        </div>
+                        </form>
+                    )}
 
-                        <div className="mt-5 flex gap-3">
-                            <Link
-                                href={route("manage_property")}
-                                className="btn btn-secondary"
-                                as="button"
-                            >
-                                Kembali
-                            </Link>
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="btn btn-primary"
-                            >
-                                Simpan
-                            </button>
-                        </div>
-                    </form>
+                    {OpsiPembiayaan && properti.pembiayaan && (
+                        <TablePembiyaan
+                            pembiayaan={properti.pembiayaan}
+                            jenis_pembiayaan={jenis_pembiayaan}
+                        />
+                    )}
 
-                    <TablePembiyaan pembiayaan={properti.pembiayaan} jenis_pembiayaan={jenis_pembiayaan} />
+                    {UnitActive && properti.tipe_unit && (
+                        <TableTipeUnit
+                            tipe_unit={properti.tipe_unit}
+                            kd_properti={properti.kd_properti}
+                        />
+                    )}
 
+                    {KavlingActive && properti.tipe_unit && (
+                        <TableKavling tipe_unit={properti.tipe_unit} />
+                    )}
+
+                    {GaleriActive && (
+                        <Galeri galeri={properti.galeri} />
+                    )}
 
                 </div>
             </div>

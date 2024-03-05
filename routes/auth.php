@@ -9,8 +9,10 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\KavlingController;
 use App\Http\Controllers\KelolaProperti;
 use App\Http\Controllers\PembiayaanController;
+use App\Http\Controllers\TipeUnitController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -71,9 +73,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/add-property', [KelolaProperti::class, 'store'])->name('store_property');
     Route::delete('/delete-property/{properti}', [KelolaProperti::class, 'destroy'])->name('delete_property');
     Route::get('/edit-property/{properti}', [KelolaProperti::class, 'edit'])->name('edit_property');
-    Route::put('/edit-property/{properti}', [KelolaProperti::class, 'update'])->name('update_property');
-
+    Route::post('/edit-property{properti}', [KelolaProperti::class, 'update'])->name('update_property');
 
     Route::post('/add-pembiayaan', [PembiayaanController::class, 'store'])->name('store_pembiayaan');
     Route::delete('/delete-pembiayaan/{pembiayaan}', [PembiayaanController::class, 'destroy'])->name('delete_pembiayaan');
+
+    Route::post("/add-tipe-unit", [TipeUnitController::class, 'store'])->name('tipe_unit.store');
+    Route::delete('/delete-tipe-unit/{tipeUnit}', [TipeUnitController::class, 'destroy'])->name('tipe-unit.destroy');
+    Route::post('/edit-tipe-unit/{tipeUnit}', [TipeUnitController::class, 'update'])->name('tipe-unit.update');
+
+    Route::post('/add-kavling', [KavlingController::class, 'store'])->name('kavling.store');
+    Route::post('/edit-kavling/{kavling}', [KavlingController::class, 'update'])->name('kavling.update');
+    Route::delete('/delete-kavling/{kavling}', [KavlingController::class, 'destroy'])->name('kavling.destroy');
 });

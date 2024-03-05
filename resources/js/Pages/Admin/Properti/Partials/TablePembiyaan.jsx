@@ -148,7 +148,7 @@ const TablePembiyaan = ({ pembiayaan, jenis_pembiayaan }) => {
                         </select>
 
                         <InputError
-                            error={errors.id_jenis_pembiayaan}
+                            message={errors.id_jenis_pembiayaan}
                             className="mt-2"
                         />
                     </div>

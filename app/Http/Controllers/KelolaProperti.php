@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePropertiRequest;
+use App\Http\Requests\UpdatePropertiRequest;
 use App\Models\JenisPembiayaan;
 use App\Models\JenisProperti;
 use App\Models\KategoriProperti;
@@ -103,7 +104,7 @@ class KelolaProperti extends Controller
     public function edit(Properti $properti)
     {
         //
-        $properti = Properti::with('tipeUnit.galeri', 'tipeUnit.kavling', 'pembiayaan.jenisPembiayaan', 'kategoriProperti')->find($properti->kd_properti);
+        $properti = Properti::with('galeri', 'tipeUnit.galeri', 'tipeUnit.kavling', 'pembiayaan.jenisPembiayaan', 'kategoriProperti')->find($properti->kd_properti);
         $jenis_properti = JenisProperti::with('kategoriProperti')->get();
         $kategori_properti = KategoriProperti::all();
         $jenis_pembiayaan = JenisPembiayaan::all();
@@ -119,10 +120,48 @@ class KelolaProperti extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Properti $properti)
+    public function update(UpdatePropertiRequest $request, Properti $properti)
     {
-        //
-        dd($request->all());
+        
+
+        if ($request->hasFile('logo')) {
+            $request->validate([
+                'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $logo = '/assets/img/properti/logo/' . $request->nama_properti . '-' . $request->file('logo')->getClientOriginalName();
+            $request->file('logo')->move(public_path('/assets/img/properti/logo'), $request->nama_properti . '-' . $request->file('logo')->getClientOriginalName());
+        } else {
+            $logo = $properti->logo;
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            $request->validate([
+                'thumbnail' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $thumbnail = '/assets/img/properti/thumbnail/' . $request->nama_properti . '-' . $request->file('thumbnail')->getClientOriginalName();
+            $request->file('thumbnail')->move(public_path('/assets/img/properti/thumbnail'), $request->nama_properti . '-' . $request->file('thumbnail')->getClientOriginalName());
+        } else {
+            $thumbnail = $properti->thumbnail;
+        }
+
+        // bersihkan pinvalue_min dan pinvalue_max dari tanda . dan ,
+        $pinvalue_min = str_replace(['.', ','], '', $request->pinvalue_min);
+        $pinvalue_max = str_replace(['.', ','], '', $request->pinvalue_max);
+
+        $properti->update([
+            'id_kategori_properti' => $request->id_kategori_properti,
+            'nama_properti' => $request->nama_properti,
+            'logo' => $logo,
+            'thumbnail' => $thumbnail,
+            'deskripsi' => $request->deskripsi,
+            'lokasi' => $request->lokasi,
+            'url_maps' => $request->url_maps,
+            'pinvalue_min' => $pinvalue_min,
+            'pinvalue_max' => $pinvalue_max,
+            'status' => $request->status,
+        ]);
+
+        return back()->with('message', 'Data properti berhasil diubah');
     }
 
     /**
