@@ -11,7 +11,7 @@ class UpdateGaleriRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,29 @@ class UpdateGaleriRequest extends FormRequest
      */
     public function rules(): array
     {
+        if($this->hasFile('url')){
+            return [
+                'url' => '|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'judul' => 'required|string|max:255',
+                'kd_tipe' => 'required',
+            ];
+        }else{
+            return [
+                'judul' => 'required|string|max:255',
+                'kd_tipe' => 'required',
+            ];
+        }
+    }
+
+    public function messages(): array
+    {
         return [
-            //
+            'url.image' => 'File harus berupa gambar',
+            'url.mimes' => 'File harus berupa gambar',
+            'url.max' => 'Ukuran file tidak boleh lebih dari 2MB',
+            'judul.required' => 'Judul tidak boleh kosong',
+            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter',
+            'kd_tipe.required' => 'Tipe unit tidak boleh kosong',
         ];
     }
 }

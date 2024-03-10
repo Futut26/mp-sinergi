@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Image from './Image';
+import Video from './Video';
 
-const Galeri = ({ galeri }) => {
+const Galeri = ({ galeri, tipe_unit }) => {
     const [imageActive, setImageActive] = useState(true);
     const [videoActive, setVideoActive] = useState(false);
     const [image, setImage] = useState([]);
     const [video, setVideo] = useState([]);
+
+
     useEffect(() => {
         if (galeri) {
             const image = galeri.filter((item) => {
@@ -55,8 +58,9 @@ const Galeri = ({ galeri }) => {
                 </ul>
             </div>
 
-            {imageActive && <Image image={image} />}
-        
+            {imageActive && <Image image={image} tipe_unit={tipe_unit} />}
+            {videoActive && <Video video={video} tipe_unit={tipe_unit} />}
+
         </div>
     );
 }

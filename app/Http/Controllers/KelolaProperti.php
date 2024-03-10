@@ -129,6 +129,8 @@ class KelolaProperti extends Controller
                 'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
             $logo = '/assets/img/properti/logo/' . $request->nama_properti . '-' . $request->file('logo')->getClientOriginalName();
+            // delete logo lama
+            unlink(public_path($properti->logo));
             $request->file('logo')->move(public_path('/assets/img/properti/logo'), $request->nama_properti . '-' . $request->file('logo')->getClientOriginalName());
         } else {
             $logo = $properti->logo;
@@ -139,6 +141,8 @@ class KelolaProperti extends Controller
                 'thumbnail' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
             $thumbnail = '/assets/img/properti/thumbnail/' . $request->nama_properti . '-' . $request->file('thumbnail')->getClientOriginalName();
+            // delete thumbnail lama
+            unlink(public_path($properti->thumbnail));
             $request->file('thumbnail')->move(public_path('/assets/img/properti/thumbnail'), $request->nama_properti . '-' . $request->file('thumbnail')->getClientOriginalName());
         } else {
             $thumbnail = $properti->thumbnail;

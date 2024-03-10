@@ -503,7 +503,7 @@ const EditProperty = ({ auth, title, ...props }) => {
                     )}
 
                     {GaleriActive && (
-                        <Galeri galeri={properti.galeri} />
+                        <Galeri galeri={properti.galeri} tipe_unit={properti.tipe_unit} />
                     )}
 
                 </div>

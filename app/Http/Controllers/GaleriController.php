@@ -29,7 +29,20 @@ class GaleriController extends Controller
      */
     public function store(StoreGaleriRequest $request)
     {
-        //
+        // simpan file
+        $url =  '/assets/img/properti/galeri/' . $request->file('url')->getClientOriginalName();
+        $request->file('url')->move(public_path('/assets/img/properti/galeri/'), $request->file('url')->getClientOriginalName());
+       
+        Galeri::create([
+            'kd_properti' => $request->kd_properti,
+            'url' => $url,
+            'judul' => $request->judul,
+            'jenis_file' => $request->jenis_file,
+            'kd_tipe' => $request->kd_tipe,
+        ]);
+
+        return redirect()->back()->with('message', 'Data berhasil ditambahkan');
+
     }
 
     /**
@@ -53,7 +66,29 @@ class GaleriController extends Controller
      */
     public function update(UpdateGaleriRequest $request, Galeri $galeri)
     {
-        //
+        // cek apakah ada url yang diupload
+        if($request->hasFile('url')){
+            // ambil nama file
+            $url =  '/assets/img/properti/galeri/' . $request->file('url')->getClientOriginalName();
+            // hapus file lama
+            if($galeri->url){
+                unlink(public_path($galeri->url));
+            }
+            $request->file('url')->move(public_path('/assets/img/properti/galeri/'), $request->file('url')->getClientOriginalName());
+            $galeri->update([
+                'url' => $url,
+                'judul' => $request->judul,
+                'kd_tipe' => $request->kd_tipe,
+            ]);
+        }else{
+            // update data
+            $galeri->update([
+                'judul' => $request->judul,
+                'kd_tipe' => $request->kd_tipe,
+            ]);
+        }
+        return redirect()->back()->with('message', 'Data berhasil diupdate');
+
     }
 
     /**
@@ -61,6 +96,15 @@ class GaleriController extends Controller
      */
     public function destroy(Galeri $galeri)
     {
-        //
+        if($galeri->url){
+            // cek apakah file ada
+            if(file_exists(public_path($galeri->url))){
+                // hapus file
+                unlink(public_path($galeri->url));
+            }
+            
+        }
+        $galeri->delete();
+        return redirect()->back()->with('message', 'Data berhasil dihapus');
     }
 }

@@ -33,7 +33,7 @@ const TableKavling = ({ tipe_unit }) => {
             <div className="flex flex-col md:flex-row gap-4 md:items-center">
                 <h1 className="text-xl font-bold">Kavling</h1>
                 <select
-                    className="form-select"
+                    className="form-select "
                     value={tipeSelected}
                     onChange={(e) => {
                         setTipeSelected(parseInt(e.target.value));

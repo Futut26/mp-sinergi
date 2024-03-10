@@ -9,10 +9,12 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\KavlingController;
 use App\Http\Controllers\KelolaProperti;
 use App\Http\Controllers\PembiayaanController;
 use App\Http\Controllers\TipeUnitController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -85,4 +87,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/add-kavling', [KavlingController::class, 'store'])->name('kavling.store');
     Route::post('/edit-kavling/{kavling}', [KavlingController::class, 'update'])->name('kavling.update');
     Route::delete('/delete-kavling/{kavling}', [KavlingController::class, 'destroy'])->name('kavling.destroy');
+
+    Route::post('/add-galeri', [GaleriController::class, 'store'])->name('galeri.store');
+    Route::post('/edit-galeri/{galeri}', [GaleriController::class, 'update'])->name('galeri.update');
+    Route::delete('/delete-galeri/{galeri}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
+
+    Route::post('/add-video', [VideoController::class, 'store'])->name('video.store');
+    Route::post('/edit-video/{video}', [VideoController::class, 'update'])->name('video.update');
+    
+
 });
